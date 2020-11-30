@@ -13,6 +13,7 @@ response = raw_input("Please input the time for the alarm in format HHMM: \n")
 print("Alarm has been set for %s hrs" % response)
 
 awake = 0
+extratime = 5
 
 try:
     while True:
@@ -29,11 +30,11 @@ try:
                 if magnet_methode == True:  # computer notices magent
                     awake = 3
 
-        if awake == 2:  # the button was hit
+        if awake == 2:  #computer has been shaken
             while count == 1:
-                alarm += 1  # seven minutes more sleep
-                print('\n you recieved 7 extra minutes!!')
-                # put annoucement here
+                alarm += extratime  # extratime of minutes more sleep
+                print('\n you recieved '+(str(extratime))+' extra minutes!!')
+                # put verbal annoucement here
                 count = 2
                 if curr_time == alarm and count == 2:  # alarm starts again
                     # song here
