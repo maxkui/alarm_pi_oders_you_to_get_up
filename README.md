@@ -7,6 +7,9 @@
 import time
 import RPi.GPIO as GPIO
 from playsound import playsound
+from sense_hat import SenseHat
+
+sense = SenseHat()# erstellt ein eines sensehat object
 
 response = raw_input("Please input the time for the alarm in format HHMM: \n")
 
