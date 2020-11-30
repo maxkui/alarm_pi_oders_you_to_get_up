@@ -45,9 +45,7 @@ try:
                         awake = 3
 
         if awake == 3:
-            GPIO.cleanup()
             print("good morning")
-            GPIO.cleanup()
             break
 finally:
     print("have a nice day")
