@@ -51,8 +51,19 @@ GPIO.add_event_detect(MAGNET_GPIO, GPIO.FALLING, bouncetime=200)
 def shakeit():
     #methode die bemerkt wenn geschüttelt wird
 
-def coolthebeer():
-    #methode die bemerkt wenn wecker im Kühlschrank
+def coolthebeer(): #methode die bemerkt wenn wecker im Kühlschrank
+    from sense_hat import SenseHat
+    import time
+
+    while True:
+    sense = SenseHat()
+    sense.clear()
+
+    temp = sense.get_temperature()      
+    print(temp)
+    time.sleep(5)                     #Temperatur wird alle 5s gemessen
+    if temp <= 10:                 #temperatur kleiner als 10 Grad, line 175 soll ausgelöst werden
+        coolthebeer() = true
 
 def heiligenummber(farbliste):
     maximsnummer = random.randrange(0, len(farbliste), 1)
