@@ -17,7 +17,7 @@ from multiprocessing import Process, Queue
 
 
 sense = SenseHat()
-sense.set_rotation(90) #possible values are 0, 90, 180, 270
+sense.set_rotation(180) #possible values are 0, 90, 180, 270
 sense.set_imu_config(False, True, False)  # only Accelerometer is enabled
 
 count = 1  # this variable is used later on
@@ -29,7 +29,7 @@ alarm = int(input("Please input the time for the alarm in format HHMM: \n"))
 print("Alarm has been set for %s hrs" % alarm)
 wakeup_songs = ["DontStopMeNow.mp3", "Lavieenrose-LouisArmstrong.mp3",
                 "MGMT-Kids.mp3", "StandByMe,BenEKing,1961.mp3",
-                "buddy.mp3", "campfire.mp3", "simple.mp3", "starglightlounge.mp3",
+                "buddy.mp3", "campfire.mp3", "simple.mp3", "starlightlounge.mp3",
                 "DancingIntheMoonlight.mp3", "04SchützeMich.mp3",
                 "01FrankSinatra-MyWay.mp3", "BrookeFraser-SomethingInTheWater[OfficialVideoHD].mp3",
                 "IDreamedaDream.mp3", "LouisArmstrongAndHisHotFive-StruttinWithSomeBarbecue.mp3",
@@ -95,14 +95,13 @@ def shakeit(q):
             q.put(False)
 
 
-def coolthebeer(): #methode die bemerkt wenn wecker im Kühlschrank
+def coolthebeer(m): #methode die bemerkt wenn wecker im Kühlschrank
     while True:
         sense.clear()
-        isthebeercold=bool
         temp1 = sense.get_temperature()
         time.sleep(5)      #Temperatur wird alle 5s gemessen
         temp2=sense.get_temperature()
-        if (temp2-temp1) >=-5:                 #temperatur kleiner als 10 Grad, line 175 soll ausgelöst werden
+        if (temp2-temp1) <=-4:                 #temperatur kleiner als 10 Grad, line 175 soll ausgelöst werden
             m.put(True)
         else:
             m.put(False)
@@ -193,12 +192,12 @@ try:
                     pshake =multiprocessing.Process(target=shakeit, args=(q,))
                     pblink.start()
                     pshake.start()
-                    if q.get()==True:
+                    if q.get()==False:
                         print("I'm about to shake it hard") # the alarm is shaken
                         alarmsound.stop() # the alarmsound activated earlier stops playing
                         discoisdead()
                         sound = vlc.MediaPlayer(
-                                "/home/pi/songs_and_sounds/special celebration/" + random.choice(celebration_sounds))
+                                "/home/pi/songs_and_sounds/specialcelebration/" + random.choice(celebration_sounds))
                         sound.play()  #say something funny, like we love to wake you up
                         awake = 2
                     pblink.terminate()
@@ -237,15 +236,15 @@ try:
                         print("Cool it babe!")
 
         if awake == 3:
-            sounds = vlc.MediaPlayer(
-                "/home/pi/songs_and_sounds/alarm/special celebration/" + random.choice(celebration_sounds))
-            sounds.play()
             pblink.terminate()
             pcold.terminate()
+            #sounds = vlc.MediaPlayer(
+               # "/home/pi/songs_and_sounds/alarm/specialcelebration/" + random.choice(celebration_sounds))
+            #sounds.play()
             discoisdead()
             song.stop()
             alarmsound.stop()
-            sounds.stop()
+            #sounds.stop()
             print("good morning")
             sense.clear()
             break
